@@ -25,19 +25,18 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, "PLease enter your Email"],
+      required: [true, "Please enter your email"],
       validate: {
         validator: function (value: string) {
           return emailRegexPattern.test(value);
         },
-        message: "Please enter a valid email",
+        message: "please enter a valid email",
       },
       unique: true,
     },
     password: {
       type: String,
-      required: [true, "PLease enter your Email"],
-      minlegth: [6, "Password must be atleast 6 characters"],
+      minlength: [6, "Password must be at least 6 characters"],
       select: false,
     },
     avatar: {
@@ -58,11 +57,10 @@ const userSchema: Schema<IUser> = new mongoose.Schema(
       },
     ],
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
-//Hash password before saving
-
+// Hash Password before saving
 userSchema.pre<IUser>("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -71,7 +69,7 @@ userSchema.pre<IUser>("save", async function (next) {
   next();
 });
 
-//compare password
+// compare password
 userSchema.methods.comparePassword = async function (
   enteredPassword: string
 ): Promise<boolean> {
